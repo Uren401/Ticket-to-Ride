@@ -9,20 +9,23 @@ import javax.imageio.ImageIO;
 public class GamePanel extends Panel implements MouseListener {
 	private BufferedImage map;
 	private Map<String, BufferedImage> cards;
-	private BufferedImage tickets[];
+	private BufferedImage[] tickets;
+	// GameState game;
 	
 	public GamePanel(Frame f) {
 		super(f);
 		addMouseListener(this);
+		// game = new GameState();
 	}
 	
 	public void paint(Graphics g) {
 		g.drawImage(map, 0, 0, 1300, 840, null);
-		g.drawImage(cards.get("back"), 1325, 25, 210, 135, null);
+		g.drawImage(tickets[0], 1330, 5, 180, 115, null);
+		g.drawImage(cards.get("back"), 1330, 120, 180, 115, null);
 
 		String[] deck = {"red", "black", "loco", "orange", "orange"};
 		for (int i = 0; i < 5; i++) {
-			g.drawImage(cards.get(deck[i]), 1325, 185 + 160 * i, 210, 135, null);
+			g.drawImage(cards.get(deck[i]), 1330, 245 + 120 * i, 180, 115, null);
 		}
 	}
 	
@@ -33,18 +36,14 @@ public class GamePanel extends Panel implements MouseListener {
 	
 	public void loadImages() {
 		cards = new HashMap<>();
+		tickets = new BufferedImage[1];
 		try {
 			map = ImageIO.read(Panel.class.getResource("/Images/europeMap.png"));
-			cards.put("back", ImageIO.read(Panel.class.getResource("/Images/Cards/backCard.png")));
-			cards.put("loco", ImageIO.read(Panel.class.getResource("/Images/Cards/locoCard.png")));
-			cards.put("black", ImageIO.read(Panel.class.getResource("/Images/Cards/blackCard.png")));
-			cards.put("blue", ImageIO.read(Panel.class.getResource("/Images/Cards/blueCard.png")));
-			cards.put("green", ImageIO.read(Panel.class.getResource("/Images/Cards/greenCard.png")));
-			cards.put("orange", ImageIO.read(Panel.class.getResource("/Images/Cards/orangeCard.png")));
-			cards.put("purple", ImageIO.read(Panel.class.getResource("/Images/Cards/purpleCard.png")));
-			cards.put("red", ImageIO.read(Panel.class.getResource("/Images/Cards/redCard.png")));
-			cards.put("white", ImageIO.read(Panel.class.getResource("/Images/Cards/whiteCard.png")));
-			cards.put("yellow", ImageIO.read(Panel.class.getResource("/Images/Cards/yellowCard.png")));
+			cards.put("back", ImageIO.read(Panel.class.getResource("/Images/backCard.png")));
+			for (String s : Helper.colorSet) {
+				cards.put(s, ImageIO.read(Panel.class.getResource("/Images/Cards/" + s + "Card.png")));
+			}
+			tickets[0] = ImageIO.read(Panel.class.getResource("/Images/backTicket.png"));
 		} catch (Exception E) {
 			System.out.println("FIRE IN THE Game!");
 			return;
