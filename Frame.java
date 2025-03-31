@@ -2,7 +2,7 @@
 import javax.swing.*;
 
 public class Frame extends JFrame {
-	private static final int WIDTH = 1650, HEIGHT = 1140;
+	private static final int WIDTH = 1550, HEIGHT = 1140;
 	private Panel[] panels = new Panel[3];
 	
 	public Frame(String framename) {
