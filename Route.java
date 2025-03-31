@@ -4,8 +4,9 @@ public class Route {
     private int length, points;
     private String color, boughtColor;
     private boolean isTunnel;
+    private City city1, city2;
 
-    public Route(int l, String c, boolean t) {
+    public Route(City city1, City city2, int l, String c, boolean t, int l) {
         //des = d;
         length = l;
         color = c;
@@ -29,6 +30,13 @@ public class Route {
     // public City getDestination(){
     //     return des;
     // }
+    public City getCity1(){
+        return city1;
+    }
+
+    public City getCity2(){
+        return city2;
+    }
 
     public int getLength(){
         return length;
