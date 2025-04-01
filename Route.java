@@ -1,16 +1,17 @@
 
 public class Route {
 
-    private int length, points;
+    private int length, points, locomotives;
     private String color, boughtColor;
     private boolean isTunnel;
     private City city1, city2;
 
-    public Route(City city1, City city2, int l, String c, boolean t, int l) {
+    public Route(City city1, City city2, int l, String c, boolean t, int lo) {
         //des = d;
         length = l;
         color = c;
         isTunnel = t;
+        locomotives = lo;
         if(length == 1){
             points = 1;
         }

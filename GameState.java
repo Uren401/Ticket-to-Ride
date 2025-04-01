@@ -1,19 +1,26 @@
+
 import java.util.*;
+
 public class GameState{
 
-    private Player[] playerArr;
+    //private Player[] playerArr;
     private int cardCounter, playerTurn;
-    private HashMap<String, int> deck;
+    private HashMap<String, Integer> deck;
     private String[] cards;
-    private ArrayList<Ticket> ticketPile;
+    //private ArrayList<Ticket> ticketPile;
     private ArrayList<City> cities;
     private HashMap<City, ArrayList<Route>> board;
-    private Scanner sc;
 
     public GameState(){
+        ArrayList<City>
         //createMap();
         
         ArrayList<City> cities = readCities();
+    }
+
+    public static void main(String[] args) {
+        System.out.println("hello");
+        
     }
 
     public void createMap(ArrayList<City> cities){
@@ -24,8 +31,17 @@ public class GameState{
         while(sc.hasNextLine()){
           String[] info = sc.nextLine().split(" ");
           city1 = searchCity(info[0], cities);
-          city2 = searchCity(info[0], cities);
-          routes.add(new Route(city1, city2, ));
+          city2 = searchCity(info[1], cities);
+          routes.add(new Route(city1, city2, Integer.parseInt(info[2]), info[3], Boolean.valueOf(info[4]), Integer.parseInt(info[5])));
+        }
+        for(City k : cities){
+            ArrayList<Route> tempRouteList = new ArrayList<>();
+            for(Route r : routes){
+                if(r.getCity1().equals(k)){
+                    tempRouteList.add(r);
+                }
+            }
+            board.put(k, tempRouteList);
         }
         
     }
@@ -36,6 +52,7 @@ public class GameState{
                 return k;
             }
         }
+        return null;
     }
 
     public ArrayList<City> readCities(){
