@@ -12,7 +12,7 @@ public class GameState{
     private HashMap<City, ArrayList<Route>> board;
 
     public GameState(){
-        ArrayList<City>
+       // ArrayList<City>
         //createMap();
         
         ArrayList<City> cities = readCities();
