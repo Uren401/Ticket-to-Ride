@@ -6,8 +6,10 @@ public class Route {
     private boolean isTunnel;
     private City city1, city2;
 
-    public Route(City city1, City city2, int l, String c, boolean t, int lo) {
+    public Route(City c1, City c2, int l, String c, boolean t, int lo) {
         //des = d;
+        city1 = c1;
+        city2 = c2;
         length = l;
         color = c;
         isTunnel = t;
@@ -49,6 +51,11 @@ public class Route {
 
     public String color(){
         return color;
+    }
+
+    public String toString(){
+        //return "route";
+        return "connects " +  city1.name() + " to " + city2.name() + " " + color + " " + length + " " + isTunnel + " " + locomotives;
     }
 
 }

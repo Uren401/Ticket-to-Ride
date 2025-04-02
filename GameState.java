@@ -12,12 +12,9 @@ public class GameState{
     private HashMap<City, ArrayList<Route>> board;
 
     public GameState(){
-       // ArrayList<City>
-        //createMap();
-        
-        //ArrayList<City> cities = readCities();
         try{
-            createMap(readCities());
+            ArrayList<City> cities = readCities();
+            createMap(cities);
             System.out.println("success");
         }
         catch(Exception e){
@@ -40,9 +37,16 @@ public class GameState{
           String[] info = sc.nextLine().split(" ");
           System.out.println(Arrays.toString(info));
           city1 = searchCity(info[0], cities);
+          System.out.println(city1);
           city2 = searchCity(info[1], cities);
-          routes.add(new Route(city1, city2, Integer.parseInt(info[2]), info[3], Boolean.valueOf(info[4]), Integer.parseInt(info[5])));
+          routes.add(new Route(city1, city2, Integer.parseInt(info[2]), info[3], Boolean.parseBoolean(info[4]), Integer.parseInt(info[5])));
         }
+        System.out.println("done");
+        for(Route r : routes){
+            //System.out.println("-");
+            System.out.println(r);
+        }
+        
         for(City k : cities){
             ArrayList<Route> tempRouteList = new ArrayList<>();
             for(Route r : routes){
@@ -69,8 +73,10 @@ public class GameState{
         Scanner sc = new Scanner(new File("cities.txt"));
         ArrayList<City> cities = new ArrayList<>();
         while(sc.hasNextLine()){
-            cities.add(new City(sc.nextLine()));
+            String[] info = sc.nextLine().split(" ");
+            cities.add(new City(info[0]));
         }
+        System.out.println(cities);
         return cities;
     }
 

@@ -67,10 +67,10 @@ Kyiv Warzawa 4 gray false 0
 Warzawa Berlin 4 purple false 0
 Warzawa Berlin 4 yellow false 0
 Warzawa Wien 4 blue false 0
-Constantinople Angora 2  gray true 0
+Constantinople Angora 2 gray true 0
 Smyrna Angora 3 orange true 0
 Angora Erzurum 3 black false 0
-Sevastopol Constantinople 4  gray false 2
+Sevastopol Constantinople 4 gray false 2
 Sevastopol Erzurum 4 gray false 2
 Sochi Erzurum 3 red true 0
 Sevastopol Sochi 2 gray false 1
