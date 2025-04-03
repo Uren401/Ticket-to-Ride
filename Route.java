@@ -14,19 +14,25 @@ public class Route {
         color = c;
         isTunnel = t;
         locomotives = lo;
-        if(length == 1){
-            points = 1;
-        }
-        else if(length == 2){
-            points = 2;
-        }else if(length == 3){
-            points = 4;
-        }else if(length == 4){
-            points = 7;
-        }else if(length == 6){
-            points = 15;
-        }else if(length == 8){
-            points = 21;
+        boughtColor = null;
+        switch (length) {
+            case 1:
+                points = 1;
+                break;
+            case 2:
+                points = 2;
+                break;
+            case 3:
+                points = 4;
+                break;
+            case 4:
+                points = 7;
+                break;
+            case 6:
+                points = 15;
+                break;
+            case 8:
+                points = 21;
         }
     }
 
@@ -54,8 +60,7 @@ public class Route {
     }
 
     public String toString(){
-        //return "route";
-        return "connects " +  city1.name() + " to " + city2.name() + " " + color + " " + length + " " + isTunnel + " " + locomotives;
+        return "Connects " +  city1.name() + " to " + city2.name() + " " + color + " " + length + " " + isTunnel + " " + locomotives + " bought color " + boughtColor;
     }
 
 }

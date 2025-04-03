@@ -1,6 +1,6 @@
+
 public class City{
     private String name;
-    
 
     public City(String n){
         name = n;
@@ -12,6 +12,4 @@ public class City{
     public String toString(){
         return name;
     }
-    
-  
 }

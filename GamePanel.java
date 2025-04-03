@@ -27,11 +27,15 @@ public class GamePanel extends Panel implements MouseListener {
 		for (int i = 0; i < 5; i++) {
 			g.drawImage(cards.get(deck[i]), 1330, 245 + 120 * i, 180, 115, null);
 		}
+
+		
 	}
 	
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
+
+
 	}
 	
 	public void loadImages() {
