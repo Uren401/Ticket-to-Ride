@@ -7,6 +7,7 @@ public class GameState{
     private Player[] playerArr;
     private int cardCounter, playerTurn;
     private HashMap<String, Integer> deck;
+    private HashMap<String, Integer> discard;
     private String[] cards;
     //private ArrayList<Ticket> ticketPile;
     private ArrayList<City> cities;
@@ -21,7 +22,7 @@ public class GameState{
         catch(Exception e){
         System.out.println("error");
         }
-        createDeck();
+        createDecks();
         printDeck();
         cards = new String[5];
         for(int i = 0; i < 5; i++){
@@ -38,49 +39,11 @@ public class GameState{
         for(Player p : playerArr){
             System.out.println(p);
         }
-        tryDrawCard("deck");
-        tryDrawCard("deck");
-        tryDrawCard("deck");
-        tryDrawCard("deck");
-
-        for(Player p : playerArr){
-            System.out.println(p);
-        }
+     
+       
     }
 
-    public void printDeck(){
-        for(Entry<String, Integer> e : deck.entrySet()){
-            System.out.println(e.getKey() + " " + e.getValue());
-        }
-    }
-
-//setting up game
-    public void createDeck(){
-        deck = new HashMap<String, Integer>();
-        for (String s : Helper.colorSet) {
-            if (s.equals("loco")) {
-                deck.put(s, 14);
-            } else {
-                deck.put(s, 12);
-            }
-        }
-    }
     
-    public String drawCard(){
-        int count = 0;
-        for (String s : Helper.colorSet) {
-            count += deck.get(s);
-        }
-        int drawn = (int) (count * Math.random());
-        for (String s : Helper.colorSet) {
-            drawn -= deck.get(s);
-            if (drawn < 0) {
-                deck.put(s, deck.get(s) - 1);
-                return s;
-            }
-        }
-        return "no";        
-    }
 
     public void drawStartingTickets(){
 
@@ -88,6 +51,22 @@ public class GameState{
     public static void main(String[] args) {
         System.out.println("hello");
         GameState g = new GameState();
+        g.test();
+    }
+
+    public void test(){
+        Scanner sc = new Scanner(System.in);
+        for(int i = 0; i < 10; i++){
+            System.out.println("Player " + (playerTurn + 1));
+            System.out.println("draw card");
+            String choice = sc.nextLine();
+            System.out.println("//////////////////////////");
+            tryDrawCard(choice);
+            for(Player p : playerArr){
+                System.out.println(p);
+            }
+            System.out.println(Arrays.toString(cards));
+        }  
     }
 
     public void createMap(ArrayList<City> cities) throws IOException{
@@ -148,18 +127,20 @@ public class GameState{
 //end of game setup
     public boolean tryDrawCard(String choice){
         //choice will either be deck or faceup index
-        if(cardCounter > 2){
-            endTurn();
+        if(cardCounter >= 2){
             return false;
         }
         if(choice.equals("deck")){
             String c = drawCard();
             playerArr[playerTurn].addCard(c);
             cardCounter++;
+            if(cardCounter == 2){
+                endTurn();
+            }
             return true;
         }
         int index = Integer.parseInt(choice);
-        String c = getCardsIndex(index);
+        String c = drawCard(index);
         if(c.equals("loco")){
             if(cardCounter == 0){
             playerArr[playerTurn].addCard(c);
@@ -169,18 +150,55 @@ public class GameState{
             return false;
         }
         playerArr[playerTurn].addCard(c);
+        cardCounter++;
+        if(cardCounter == 2){
+            endTurn();
+        }
         return true;
-
-        
     }
 
     public void endTurn(){
-        playerTurn++;
+        playerTurn = (playerTurn+1)%4;
         cardCounter = 0;
 
     }
 
-    public String getCardsIndex(int i){
+    public void printDeck(){
+        for(Entry<String, Integer> e : deck.entrySet()){
+            System.out.println(e.getKey() + " " + e.getValue());
+        }
+    }
+
+//setting up game
+    public void createDecks(){
+        deck = new HashMap<String, Integer>();
+        discard = Helper.getEmptyDeck();
+        for (String s : Helper.colors) {
+            if (s.equals("loco")) {
+                deck.put(s, 14);
+            } else {
+                deck.put(s, 12);
+            }
+        }
+    }
+    
+    private String drawCard(){
+        int count = 0;
+        for (String s : Helper.colors) {
+            count += deck.get(s);
+        }
+        int drawn = (int) (count * Math.random());
+        for (String s : Helper.colors) {
+            drawn -= deck.get(s);
+            if (drawn < 0) {
+                deck.put(s, deck.get(s) - 1);
+                return s;
+            }
+        }
+        return "no";        
+    }
+
+    public String drawCard(int i){
         String k = cards[i];
         cards[i] = drawCard();
         int lococounter = 0;
@@ -195,12 +213,41 @@ public class GameState{
         }
         return k;
     }
+    
     public String[] getCards(){
         return cards;
     }
+//buy routes
+    public boolean buyRoute(String c1, String c2, ArrayList<String> cards){
+        if(cards.isEmpty()){
+            return false;
+        }
+        City city1 = searchCity(c1, cities);
+        City city2 = searchCity(c2, cities);
+        ArrayList<Route> routeslist = board.get(city1);
+        String cardcolor = "";
+        for(String s : cards){
+            if(!s.equals("loco")){
+                cardcolor = s;
+                break;
+            }
+        }
+        Route purchaseRoute = null;
+        for(Route r : routeslist){
+            if((r.getCity1().equals(city2) || r.getCity2().equals(city1)) && (r.color().equals("gray") || r.color().equals(cardcolor))){
+                purchaseRoute = r;
+            }
+        }
+        if(purchaseRoute == null){
+            return false;
+        }
 
-    
-
+        if(!purchaseRoute.isTunnel() && purchaseRoute.getLocomotives() == 0){
+            if(cards.size() >= purchaseRoute.getLength()){
+                purchaseRoute.buyRoute(playerArr[playerTurn].getco);
+            }
+        }
+    }
     // public void createRoutes
 
 }

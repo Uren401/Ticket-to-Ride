@@ -1,6 +1,7 @@
 
 public class Route {
 
+    private boolean isStation;
     private int length, points, locomotives;
     private String color, boughtColor;
     private boolean isTunnel;
@@ -8,6 +9,7 @@ public class Route {
 
     public Route(City c1, City c2, int l, String c, boolean t, int lo) {
         //des = d;
+        isStation = false;
         city1 = c1;
         city2 = c2;
         length = l;
@@ -55,8 +57,28 @@ public class Route {
         return points;
     }
 
+    public int getLocomotives(){
+        return locomotives;
+    }
+
     public String color(){
         return color;
+    }
+
+    public void setStation(String c){
+        //color = c;
+        isStation = true;
+    }
+
+    public void buyRoute(String c){
+        boughtColor = c;
+    }
+
+    public boolean isTunnel(){
+        return isTunnel;
+    }
+    public boolean isStation(){
+        return isStation;
     }
 
     public String toString(){

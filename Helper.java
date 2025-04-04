@@ -4,11 +4,11 @@ import java.awt.image.*;
 import java.util.*;
 
 public class Helper {
-    public static final Set<String> colorSet = Set.of("black", "blue", "green", "loco", "orange", "purple", "red", "white", "yellow");
+    public static final Set<String> colors = Set.of("black", "blue", "green", "loco", "orange", "purple", "red", "white", "yellow");
 
-    public static HashMap<String, Integer> getColorMap() {
+    public static HashMap<String, Integer> getEmptyDeck() {
         HashMap<String, Integer> colorMap = new HashMap<>();
-        for (String s : colorSet) {
+        for (String s : colors) {
             colorMap.put(s, 0);
         }
         return colorMap;

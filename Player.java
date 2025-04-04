@@ -14,7 +14,7 @@ public class Player{
         numTrains = 45;
         numStations = 3;
 
-        cards = Helper.getColorMap();
+        cards = Helper.getEmptyDeck();
         color = c;
     }
 
@@ -33,6 +33,10 @@ public class Player{
         else{
             System.out.println("You don't have any " + c + " cards left.");
         }
+    }
+
+    public String getColor(){
+        return color;
     }
 
     public String toString(){

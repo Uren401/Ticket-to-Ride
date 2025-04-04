@@ -44,7 +44,7 @@ public class GamePanel extends Panel implements MouseListener {
 		try {
 			map = ImageIO.read(Panel.class.getResource("/Images/europeMap.png"));
 			cards.put("back", ImageIO.read(Panel.class.getResource("/Images/backCard.png")));
-			for (String s : Helper.colorSet) {
+			for (String s : Helper.colors) {
 				cards.put(s, ImageIO.read(Panel.class.getResource("/Images/Cards/" + s + "Card.png")));
 			}
 			tickets[0] = ImageIO.read(Panel.class.getResource("/Images/backTicket.png"));

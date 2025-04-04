@@ -1,7 +1,8 @@
 
 public class City {
     private String name;
-    private Player station;
+    private String station;
+    
     public City(String n){
         name = n;
         station = null;
@@ -14,9 +15,15 @@ public class City {
     public String toString(){
         return name;
     }
-    public 
- dio
-    public String getr(){
+    public boolean addStation(String s){
+        if(station == null){
+            station = s;
+            return true;
+        }
+        return false;
+    }
+
+    public String getStation(){
         return station;
     }
 }
