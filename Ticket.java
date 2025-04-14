@@ -12,6 +12,16 @@ public class Ticket{
         completed = false;
     }
 
+
+    public int getPoints(){
+        return points;
+    }
+    public City city1(){
+        return city1;
+    }
+    public City city2(){
+        return city2;
+    }
     public String toString() {
         return "Ticket from " + city1 + " to " + city2 + " " + points + " " + completed;
     }
