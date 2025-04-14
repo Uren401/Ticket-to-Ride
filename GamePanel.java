@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 public class GamePanel extends Panel implements MouseListener {
 	private BufferedImage map;
-	private Map<String, BufferedImage> cards, trains;
+	private Map<String, BufferedImage> cards, trains, stations;
 	private BufferedImage[] tickets;
 	// GameState game;
 	
@@ -20,7 +20,7 @@ public class GamePanel extends Panel implements MouseListener {
 	public void paint(Graphics g) {
 		g.drawImage(map, 0, 0, 1300, 840, null);
 
-		g.drawImage(tickets[0], 1330, 5, 180, 115, null);
+		g.drawImage(tickets[0], 1330, 5, 190, 115, null);
 		g.drawImage(cards.get("back"), 1330, 120, 180, 115, null);
 		String[] deck = {"red", "black", "loco", "orange", "orange"};
 		for (int i = 0; i < 5; i++) {
@@ -30,16 +30,29 @@ public class GamePanel extends Panel implements MouseListener {
 		paintHand(g);
 
 		g.setFont(new Font("Sans Serif", Font.BOLD, 50));
+		g.drawImage(Helper.applyOpacity(trains.get("green"), 0.7f), 1400, 900, 100, 50, null);
 		g.setColor(Color.GREEN);
-		g.drawString("45", 1400, 920);
+		g.drawString("45", 1420, 940);
+		g.drawString("0", 1420, 1020);
+		g.drawImage(Helper.applyOpacity(trains.get("red"), 0.7f), 1280, 900, 100, 50, null);
 		g.setColor(Color.RED);
-		g.drawString("45", 1270, 920);
+		g.drawString("45", 1300, 940);
+		g.drawString("0", 1300, 1020);
+		g.drawImage(Helper.applyOpacity(trains.get("blue"), 0.8f), 1160, 900, 100, 50, null);
 		g.setColor(Color.BLUE);
-		g.drawString("45", 1140, 920);
+		g.drawString("45", 1180, 940);
+		g.drawString("0", 1180, 1020);
+		g.drawImage(Helper.applyOpacity(trains.get("yellow"), 0.7f), 1040, 900, 100, 50, null);
 		g.setColor(Color.YELLOW);
-		g.drawString("45", 1010, 920);
+		g.drawString("45", 1060, 940);
+		g.drawString("0", 1060, 1020);
 
-		g.drawImage(tickets[0], 750, 870, 180, 115, null);
+		for (int i = 2; i >= 0; i--) {
+			g.drawImage(stations.get("blue"), 965, 880 + 40 * i, 55, 90, null);
+		}
+
+		g.drawImage(tickets[0], 750, 870, 200, 130, null);
+		g.drawImage(tickets[0], 750, 900, 200, 130, null);
 
 		// make jbuttons when
 	}
@@ -92,6 +105,7 @@ public class GamePanel extends Panel implements MouseListener {
 	public void loadImages() {
 		cards = new HashMap<>();
 		trains = new HashMap<>();
+		stations = new HashMap<>();
 		tickets = new BufferedImage[1];
 		try {
 			map = ImageIO.read(Panel.class.getResource("/Images/europeMap.png"));
@@ -105,6 +119,11 @@ public class GamePanel extends Panel implements MouseListener {
 			trains.put("blue", ImageIO.read(Panel.class.getResource("/Images/Trains/blueTrain.png")));
 			trains.put("green", ImageIO.read(Panel.class.getResource("/Images/Trains/greenTrain.png")));
 			trains.put("yellow", ImageIO.read(Panel.class.getResource("/Images/Trains/yellowTrain.png")));
+
+			stations.put("red", ImageIO.read(Panel.class.getResource("/Images/Stations/redStation.png")));
+			stations.put("blue", ImageIO.read(Panel.class.getResource("/Images/Stations/blueStation.png")));
+			stations.put("green", ImageIO.read(Panel.class.getResource("/Images/Stations/greenStation.png")));
+			stations.put("yellow", ImageIO.read(Panel.class.getResource("/Images/Stations/yellowStation.png")));
 
 			tickets[0] = ImageIO.read(Panel.class.getResource("/Images/backTicket.png"));
 		} catch (Exception E) {
