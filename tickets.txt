@@ -2,7 +2,7 @@ Amsterdam Pamplona 7 /RouteImages/AmsterdamPamplona.jpg
 Amsterdam Wilno 12 /RouteImages/AmsterdamWilno.jpg
 Angora Kharkov 10 /RouteImages/AngoraKharkov.jpg
 Athina Angora 5 /RouteImages/AthinaAngora.jpg
-Athina WIlno 11 /RouteImages/AthinaWilno.jpg
+Athina Wilno 11 /RouteImages/AthinaWilno.jpg
 Barcelona Bruxelles 8 /RouteImages/BarcelonaBruxelles.jpg
 Barcelona Munchen 8 /RouteImages/BarcelonaMunchen.jpg
 Berlin Bucuresti 8 /RouteImages/BerlinBucuresti.jpg
@@ -17,7 +17,7 @@ Cadiz Stockholm 21 /RouteImages/CadizStockholm.jpg
 Edinburgh Athina 21 /RouteImages/EdiburghAthina.jpg
 Edinburgh Paris 7 /RouteImages/EdinburghParis.jpg
 Essen Kyiv 10 /RouteImages/EssenKyiv.jpg
-Frankfurt Kobenhavn 5 /RouteImages/FrankfurtKobenhaven.jpg
+Frankfurt Kobenhavn 5 /RouteImages/FrankfurtKobenhavn.jpg
 Frankfurt Smolensk 13 /RouteImages/FrankfurtSmolensk.jpg
 Kobenhavn Erzurum 21 /RouteImages/KobenhavnErzurum.jpg
 Kyiv Petrograd 6 /RouteImages/KyivPetrograd.jpg
