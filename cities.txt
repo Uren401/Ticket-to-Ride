@@ -17,7 +17,7 @@ London 276 240
 Edinburgh 189 42
 Amsterdam 401 244
 Essen 507 255
-Khobenhaven 599 118
+Kobenhavn 599 118
 Stockholm 736 17
 Berlin 637 275
 Wien 714 427
@@ -27,8 +27,8 @@ Palermo 644 819
 Athina 869 784
 Sarajevo 806 625
 Budapest 774 460
-Warzawa 851 264
-Danzic 787 173
+Warszawa 851 264
+Danzig 787 173
 Riga 894 56
 Petrograd 1115 48
 Wilno 996 232
