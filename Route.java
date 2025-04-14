@@ -65,6 +65,9 @@ public class Route {
         return color;
     }
 
+    public String boughtColor(){
+        return boughtColor;
+    }
     public void setStation(String c){
         //color = c;
         isStation = true;
