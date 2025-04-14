@@ -5,18 +5,20 @@ import java.util.Map.Entry;
 public class GameState{
 
     private Player[] playerArr;
-    private int cardCounter, playerTurn;
+    private int cardCounter, playerTurn, endgame;
     private HashMap<String, Integer> deck;
     private HashMap<String, Integer> discard;
     private String[] cards;
-    //private ArrayList<Ticket> ticketPile;
+    private ArrayList<Ticket> ticketPile, longRoutes;
     private ArrayList<City> cities;
     private HashMap<City, ArrayList<Route>> board;
 
+
     public GameState(){
         try{
-            ArrayList<City> cities = readCities();
+            cities = readCities();
             createMap(cities);
+            createTickets();
             System.out.println("success");
         }
         catch(Exception e){
@@ -36,18 +38,22 @@ public class GameState{
         playerArr[1] = new Player("BLUE");
         playerArr[2] = new Player("GREEN");
         playerArr[3] = new Player("RED");
-        for(Player p : playerArr){
-            System.out.println(p);
-        }
+        endgame = 0;
+        drawStartingTickets();
+        printPlayers();
+
      
        
     }
 
+    public void printPlayers(){
+        for(Player p : playerArr){
+            System.out.println(p);
+        }
+    }
+
     
 
-    public void drawStartingTickets(){
-
-    }
     public static void main(String[] args) {
         System.out.println("hello");
         GameState g = new GameState();
@@ -56,7 +62,7 @@ public class GameState{
 
     public void test(){
         Scanner sc = new Scanner(System.in);
-        for(int i = 0; i < 10; i++){
+        /*for(int i = 0; i < 10; i++){
             System.out.println("Player " + (playerTurn + 1));
             System.out.println("draw card");
             String choice = sc.nextLine();
@@ -66,10 +72,39 @@ public class GameState{
                 System.out.println(p);
             }
             System.out.println(Arrays.toString(cards));
-        }  
+
+        }  */
+        //   System.out.println("buy route");
+        //   String[] cardarr = new String[]{"orange", "orange", "orange"};
+        //   ArrayList<String> cards = new ArrayList<>(Arrays.asList(cardarr)); 
+        //   //System.out.println(cards);
+        //   System.out.println(cities);
+        //   System.out.println(buyRoute("Munchen", "Wien", cards));
+        //   for(Player p : playerArr){
+        //     System.out.println(p);
+        //}
+            String x = sc.nextLine();
+            while(!x.equals("stop")){
+                if(x.equals("buy route")){
+                    System.out.println("cards");
+                    String[] cardarr = sc.nextLine().split(" ");
+                    ArrayList<String> cards = new ArrayList<>(Arrays.asList(cardarr)); 
+                    System.out.println("city 1");
+                    String c1 = sc.nextLine();
+                    System.out.println("city 2");
+                    String c2 = sc.nextLine();
+                    System.out.println(buyRoute(c1, c2, cards));
+                }
+                if(x.equals("check tickets")){
+                    for(Ticket t : playerArr[playerTurn].getTickets()){
+                        System.out.println(checkCompleted(t, playerArr[playerTurn].getColor()));
+                    }
+                }
+                x = sc.nextLine();
+            }
     }
 
-    public void createMap(ArrayList<City> cities) throws IOException{
+    public void createMap(ArrayList<City> cities) throws IOException {
         board = new HashMap<>();
         Scanner sc = new Scanner(new File("routes.txt"));
         ArrayList<Route> routes = new ArrayList<Route>();
@@ -124,7 +159,85 @@ public class GameState{
         System.out.println(cities);
         return cities;
     }
-//end of game setup
+
+    public void createTickets() throws IOException{
+        ticketPile = new ArrayList<>();
+        longRoutes = new ArrayList<>();
+        Scanner sc = new Scanner(new File("tickets.txt"));
+        while(sc.hasNextLine()){
+            String[] info = sc.nextLine().split(" ");
+            City city1 = searchCity(info[0], cities);
+            City city2 = searchCity(info[1], cities);
+            Ticket t = new Ticket(city1, city2, Integer.parseInt(info[2]));
+            if(t.getPoints() >= 20){
+                longRoutes.add(t);
+            }else{
+                ticketPile.add(t);
+            }
+        }
+        //Collections.shuffle(ticketPile);
+        Collections.shuffle(longRoutes);
+    }
+
+    public Ticket drawTicket(){
+        return ticketPile.remove(0);
+    }
+
+    public Ticket getLongTicket(){
+        return longRoutes.remove(0);
+    }
+
+    //end of game setup
+
+    public boolean checkCompleted(Ticket t, String p){
+        System.out.println(t);
+        City city1 = t.city1();
+        City city2 = t.city2();
+        ArrayList<City> visited = new ArrayList<>();
+        return checkCompleted(city1, city2, p, visited) || checkCompleted(city2, city1, p, visited);
+    }
+
+    public boolean checkCompleted(City c1, City c2, String p, ArrayList<City> visited){
+        ArrayList<Route> routeliest = board.get(c1);
+        visited.add(c1);
+        for(Route r : routeliest){
+            if(r.boughtColor() != null && r.boughtColor().equals(p)){
+                 if(r.getCity2().equals(c2) && !visited.contains(c2)){
+                    return true;
+                 }
+                 return checkCompleted(r.getCity2(), c2, p, visited);
+            }
+            return false;
+        }
+        return false;
+    }
+    
+    public void drawStartingTickets(){
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Ticket> temp = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            temp = new ArrayList<>();
+            temp.add(getLongTicket());
+            for(int j = 0; j < 3; j++){
+                temp.add(drawTicket());
+            }
+
+            System.out.println("Drawn tickets " + temp);
+            System.out.println("Select the indexes of up to 2 tickets to discard (type STOP to end)");
+            String x = sc.nextLine();
+            while(!x.equals("STOP") && temp.size() >= 4){
+                int index = Integer.parseInt(x);
+                temp.remove(index);
+                System.out.println(temp);
+                x = sc.nextLine();
+            }
+            for(Ticket t : temp){
+                playerArr[i].addTicket(t);
+            }
+        }
+
+    }
+   
     public boolean tryDrawCard(String choice){
         //choice will either be deck or faceup index
         if(cardCounter >= 2){
@@ -158,6 +271,12 @@ public class GameState{
     }
 
     public void endTurn(){
+        if(playerArr[playerTurn].numTrains() <= 2 || endgame != 0){
+            endgame++;
+        }
+        if(endgame == 4){
+            endGame();
+        }
         playerTurn = (playerTurn+1)%4;
         cardCounter = 0;
 
@@ -225,29 +344,120 @@ public class GameState{
         City city1 = searchCity(c1, cities);
         City city2 = searchCity(c2, cities);
         ArrayList<Route> routeslist = board.get(city1);
+        System.out.println(routeslist);
         String cardcolor = "";
-        for(String s : cards){
+        for(String s:cards){
+            System.out.println(s);
             if(!s.equals("loco")){
                 cardcolor = s;
-                break;
-            }
         }
+    }
+        if(cardcolor.equals(""))
+        cardcolor = "loco";
+        System.out.println("color " + cardcolor);
         Route purchaseRoute = null;
         for(Route r : routeslist){
-            if((r.getCity1().equals(city2) || r.getCity2().equals(city1)) && (r.color().equals("gray") || r.color().equals(cardcolor))){
+            if(((r.getCity1().equals(city1) && r.getCity2().equals(city2))|| (r.getCity2().equals(city1) && r.getCity1().equals(city2))) && (r.color().equals("gray") || r.color().equals(cardcolor))){
                 purchaseRoute = r;
             }
         }
         if(purchaseRoute == null){
+            System.out.println("no route found");
             return false;
         }
+        System.out.println(purchaseRoute);
+         
+        int locomotives = purchaseRoute.getLocomotives();
+        int locomotivecards = 0;
+        for(String x : cards){
+            if(x.equals("loco"))
+            locomotivecards++;
+        }
+        if(cards.size() < purchaseRoute.getLength()){
+            return false;
+        }
+        if(!purchaseRoute.isTunnel() && locomotives == 0){
+            purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+            playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
+            //endTurn();
+            return true;
+        }
+        if(locomotives != 0){
+            if(locomotivecards >= locomotives){
+                purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+                playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
+                //endTurn();
+                return true;
+            }
+            return false;
+        }
+        return buyTunnel(purchaseRoute, cardcolor);
 
-        if(!purchaseRoute.isTunnel() && purchaseRoute.getLocomotives() == 0){
-            if(cards.size() >= purchaseRoute.getLength()){
-                purchaseRoute.buyRoute(playerArr[playerTurn].getco);
+
+    }
+
+    public boolean buyTunnel(Route purchaseRoute, String color){
+        ArrayList<String> extraCards = new ArrayList<>();
+        int extra = 0;
+        for(int i = 0; i < 3; i++){
+            String c = drawCard();
+            extraCards.add(c);
+            if(c.equals(color)){
+                extra++;
             }
         }
+        if(extra == 0){
+            purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+            endTurn();
+            return true;
+        }
+        //ask for extra cards
+        return false;
+
+
     }
-    // public void createRoutes
+
+    public boolean placeStation(String s){
+        City c = searchCity(s, cities);
+        if(c.addStation(playerArr[playerTurn].getColor())){
+            int price = 4 - playerArr[playerTurn].getStations();
+            ArrayList<String> cards = new ArrayList<String>();
+            if(cards.size() >= price){
+                playerArr[playerTurn].useStation();
+                endTurn();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void drawTickets(){
+        ArrayList<Ticket> tlist = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            tlist.add(drawTicket());
+        }
+
+
+        endTurn();
+    }
+//end game
+    public void endGame(){
+        int s = 0;
+        for(Player p : playerArr){
+            s += checkStations(p);
+            s += checkCompleted(p);
+            p.addPoints(s);
+        }
+        //  check european express
+        // switch to end screen
+    }
+
+    public int checkStations(Player p){
+        return 4 * p.getStations();
+    }
+
+    public int checkCompleted(Player p){
+        return 0;
+    }
 
 }
