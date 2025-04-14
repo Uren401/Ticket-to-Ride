@@ -13,11 +13,18 @@ public class Player{
         score = 0;
         numTrains = 45;
         numStations = 3;
+        tickets = new ArrayList<>();
 
         cards = Helper.getEmptyDeck();
         color = c;
     }
 
+    public ArrayList<Ticket> getTickets(){
+        return tickets;
+    }
+    public void addPoints(int x){
+        score += x;
+    }
     public void drawTicket(Ticket t){
         tickets.add(t);
     }
@@ -35,23 +42,50 @@ public class Player{
         }
     }
 
+    public void useStation(){
+        numStations--;
+    }
+    public void addTicket(Ticket t){
+        tickets.add(t);
+    }
     public String getColor(){
         return color;
     }
 
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("Player Color: " + color + "\n");
-        sb.append("Score: " + score + "\n");
-        sb.append("Number of Trains: " + numTrains + "\n");
-        sb.append("Number of Stations: " + numStations + "\n");
-        sb.append("Cards: \n");
-
-        for(Map.Entry<String, Integer> entry : cards.entrySet()){
-            sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
-        }
-
-        return sb.toString();
+    public int getScore(){
+        return score;
     }
 
+    public int getStations(){
+        return numStations;
+    }
+
+    public int numTrains(){
+        return numTrains;
+    }
+    public String toString(){
+        // StringBuilder sb = new StringBuilder();
+        // sb.append("Player Color: " + color + "\n");
+        // sb.append("Score: " + score + "\n");
+        // sb.append("Number of Trains: " + numTrains + "\n");
+        // sb.append("Number of Stations: " + numStations + "\n");
+        // sb.append("Cards: \n");
+
+        // for(Map.Entry<String, Integer> entry : cards.entrySet()){
+        //     sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
+        // }
+
+        
+        // return sb.toString();
+
+        return color + " player " + numTrains + " trains " + numStations + " stations " + tickets + " " + cardtostring();
+    }
+
+    public String cardtostring(){
+        String x = "";
+        for(Map.Entry<String, Integer> entry : cards.entrySet()){
+                x += entry.getKey() + ": " + entry.getValue() + "   ";
+        }
+        return x;
+    }
 }
