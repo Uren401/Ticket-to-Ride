@@ -17,7 +17,7 @@ London 276 240
 Edinburgh 189 42
 Amsterdam 401 244
 Essen 507 255
-Kobenhavn 599 118
+Kobenhaven 599 118
 Stockholm 736 17
 Berlin 637 275
 Wien 714 427
