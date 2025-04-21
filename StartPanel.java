@@ -1,7 +1,6 @@
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 
@@ -14,12 +13,12 @@ public class StartPanel extends Panel implements MouseListener {
 	}
 	
 	public void paint(Graphics g) {
-		g.drawImage(startScreen, 0, 0, 1640, 1530, null);
+		g.drawImage(startScreen, -20, -30, 1600, 1195, null);
 
 		g.drawImage(Helper.applyOpacity(gameButton, 0.9f), 570,460, 500, 200, null);
 		g.drawImage(Helper.applyOpacity(creditsButton, 0.9f), 570, 760, 500, 200, null);
 	}
-	
+
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
