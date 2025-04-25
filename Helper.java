@@ -4,7 +4,7 @@ import java.awt.image.*;
 import java.util.*;
 
 public class Helper {
-    public static final Set<String> colors = Set.of("black", "blue", "green", "loco", "orange", "purple", "red", "white", "yellow");
+    public static final ArrayList<String> colors = new ArrayList<>(Arrays.asList("black", "blue", "green", "orange", "purple", "red", "white", "yellow", "loco"));
 
     public static HashMap<String, Integer> getEmptyDeck() {
         HashMap<String, Integer> colorMap = new HashMap<>();
