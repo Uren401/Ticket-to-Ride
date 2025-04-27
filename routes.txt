@@ -15,6 +15,7 @@ Paris Brest 3 black false 0
 Paris Dieppe 1 purple false 0
 Paris Zurich 3 gray true 0
 Dieppe London 2 gray false 1
+Dieppe London 2 gray false 1
 Dieppe Brest 2 orange false 0
 London Edinburgh 4 black false 0
 London Edinburgh 4 orange false 0
@@ -58,6 +59,7 @@ Sofia Sarajevo 2 gray true 0
 Sofia Constantinople 3 blue false 0
 Athina Smyrna 2 gray false 1
 Smyrna Constantinople 2 gray true 0
+Palermo Smyrna 6 gray false 2
 Constantinople Bucuresti 3 yellow false 0
 Bucuresti Sofia 2 gray true 0
 Bucuresti Budapest 4 gray true 0
@@ -88,6 +90,7 @@ Petrograd Stockholm 8 gray true 0
 Stockholm Kobenhavn 3 yellow false 0
 Stockholm Kobenhavn 3 white false 0
 Kobenhavn Essen 3 gray false 1
+Kobenhavn Essen 3 gray false 1
 Riga Danzig 3 black false 0
 Danzig Berlin 3 gray false 0
 Danzig Warszawa 2 gray false 0
@@ -96,4 +99,3 @@ Wilno Riga 4 green false 0
 Wilno Smolensk 3 yellow false 0
 Wilno Kyiv 2 gray false 0
 Smolensk Kyiv 3 red false 0
-Palermo Athina 6 gray false 2
