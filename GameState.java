@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 public class GameState {
 
 	private Player[] playerArr;
-	private int cardCounter, playerTurn, endgame;
+	private int cardCounter, playerTurn, endgame, extra;
 	private HashMap<String, Integer> deck;
 	private HashMap<String, Integer> discard;
 	private String[] cards;
@@ -16,9 +16,9 @@ public class GameState {
 	private City currentCity;
 	private boolean turnover, drawingstartingtickets;
 	public String status, buyingwithcolor, purchasecity1, purchasecity2;
-	public ArrayList<String> payingwithcards;
+	public ArrayList<String> payingwithcards, extracards;
 	public ArrayList<Route> routes;
-
+	public Route purchaseRoute;
 	public GameState() {
 		try {
 			cities = readCities();
@@ -51,6 +51,7 @@ public class GameState {
 		payingwithcards = new ArrayList<>();
 		purchasecity1 = "";
 		purchasecity2 = "";
+		purchaseRoute = null;
 		// drawStartingTickets();
 		printPlayers();
 
@@ -687,7 +688,7 @@ public class GameState {
 		if (cardcolor.equals(""))
 			cardcolor = "loco";
 		System.out.println("color " + cardcolor);
-		Route purchaseRoute = null;
+		purchaseRoute = null;
 		for (Route r : routeslist) {
 			if (((r.getCity1().equals(city1) && r.getCity2().equals(city2))
 					|| (r.getCity2().equals(city1) && r.getCity1().equals(city2)))
@@ -713,8 +714,8 @@ public class GameState {
 		if (availablecards < purchaseRoute.getLength()) {
 			return "Not enough cards";
 		}
+		int locomotivesused = purchaseRoute.getLength() - playerArr[playerTurn].getCards(cardcolor);
 		if (!purchaseRoute.isTunnel() && locomotives == 0) {
-			int locomotivesused = purchaseRoute.getLength() - playerArr[playerTurn].getCards(cardcolor);
 			if(locomotivesused <= 0) {
 				playerArr[playerTurn].useCards(cardcolor, purchaseRoute.getLength());
 			}else {
@@ -728,6 +729,8 @@ public class GameState {
 		}
 		if (locomotives != 0) {
 			if (locomotivecards >= locomotives) {
+				playerArr[playerTurn].useCards("loco", locomotivesused);
+				playerArr[playerTurn].useCards(cardcolor, purchaseRoute.getLength() - locomotivesused);
 				purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
 				playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
 				endTurn();
@@ -735,28 +738,84 @@ public class GameState {
 			}
 			return "not enough locomotives";
 		}
-		// return buyTunnel(purchaseRoute, cardcolor);
-		return "";
-
-	}
-
-	public boolean buyTunnel(Route purchaseRoute, String color) {
-		ArrayList<String> extraCards = new ArrayList<>();
-		int extra = 0;
+		status = "buy tunnel";
+		extracards = new ArrayList<>();
+		extra = 0;
 		for (int i = 0; i < 3; i++) {
 			String c = drawCard();
-			extraCards.add(c);
-			if (c.equals(color)) {
+			extracards.add(c);
+			if (c.equals(buyingwithcolor) || c.equals("loco")) {
 				extra++;
 			}
 		}
-		if (extra == 0) {
+		if(extra == 0) {
+			if(locomotivesused <= 0) {
+				playerArr[playerTurn].useCards(cardcolor, purchaseRoute.getLength());
+			}else {
+				playerArr[playerTurn].useCards("loco", locomotivesused);
+				playerArr[playerTurn].useCards(cardcolor, purchaseRoute.getLength() - locomotivesused);
+			}
 			purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
-			endTurn();
-			return true;
+			playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
+			status = "bought tunnel";
+			return("bought tunnel");
 		}
-		// ask for extra cards
+		return "buy tunnel: drawing extra cards";
+
+	}
+
+	public boolean payExtraCards(String c) {
+		int locomotivesused = purchaseRoute.getLength() - playerArr[playerTurn].getCards(buyingwithcolor);
+		int usedcards;
+		if(locomotivesused > 0 && !buyingwithcolor.equals("loco")) {
+			usedcards = purchaseRoute.getLength() - locomotivesused;
+		}else {
+			usedcards = purchaseRoute.getLength();
+		}
+		if(c.equals(buyingwithcolor)){
+			if(extra <= playerArr[playerTurn].getCards(c) - usedcards) {
+				playerArr[playerTurn].useCards("loco", locomotivesused);
+				playerArr[playerTurn].useCards(c, purchaseRoute.getLength() - locomotivesused + extra);
+				purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+				playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
+				//endTurn();
+				extra = 0;
+				return true;
+			}else {
+				return false;
+			}
+		}
+		if(c.equals("loco")) {
+			if(extra <= playerArr[playerTurn].getCards("loco") - locomotivesused) {
+				playerArr[playerTurn].useCards("loco", locomotivesused + extra);
+				playerArr[playerTurn].useCards(c, purchaseRoute.getLength() - locomotivesused);
+				purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+				playerArr[playerTurn].addPoints(purchaseRoute.getPoints());
+				extra = 0;
+				return true;
+			}else {
+				return false;
+			}
+		}
 		return false;
+	}
+	public int getExtra() {
+		return extra;
+	}
+	public ArrayList<String> getExtraCards(){
+		return extracards;
+	}
+	public int tryBuyTunnel() {
+		
+		
+		return extra;
+		//if (extra == 0) {
+			//purchaseRoute.buyRoute(playerArr[playerTurn].getColor());
+			//endTurn();
+			//return "succces: tunnel";
+		//}
+		// ask for extra cards
+		
 
 	}
 	
