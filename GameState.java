@@ -8,7 +8,6 @@ public class GameState {
 	private Player[] playerArr;
 	private int cardCounter, playerTurn, endgame, extra;
 	private HashMap<String, Integer> deck;
-	private HashMap<String, Integer> discard;
 	private String[] cards;
 	private ArrayList<Ticket> ticketPile, longRoutes;
 	private ArrayList<City> cities;
@@ -498,7 +497,7 @@ public class GameState {
 	}
 
 //setting up game
-	public void createDecks() {
+	private void createDecks() {
 		deck = new HashMap<String, Integer>();
 		discard = Helper.getEmptyDeck();
 		for (String s : Helper.colors) {
@@ -515,6 +514,10 @@ public class GameState {
 		for (String s : Helper.colors) {
 			count += deck.get(s);
 		}
+        if (count == 0) {
+            createDecks();
+            return drawCard();
+        }
 		int drawn = (int) (count * Math.random());
 		for (String s : Helper.colors) {
 			drawn -= deck.get(s);
@@ -523,7 +526,7 @@ public class GameState {
 				return s;
 			}
 		}
-		return "no";
+		return null;
 	}
 
 	public String drawCard(int i) {
